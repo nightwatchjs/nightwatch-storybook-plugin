@@ -1,0 +1,12 @@
+.git
+.DS_Store
+
+.vim
+.idea
+
+/utils
+/storybook
+/nightwatch
+logs
+tests_output
+node_modules
