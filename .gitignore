@@ -3,6 +3,6 @@
 
 .vim
 .idea
-logs
+    logs
 tests_output
 node_modules
