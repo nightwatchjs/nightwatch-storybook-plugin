@@ -11,42 +11,41 @@ let storybookPid = null;
 module.exports = {
   async before() {
 
-    const pluginSettings = this.settings['@nightwatch/storybook'];
+    const pluginSettings = Object.assign({
+      start_storybook: false,
+      storybook_url: 'http://localhost:6006/'
+    }, this.settings['@nightwatch/storybook']);
 
-    let launchUrl = this.settings.launch_url;
+    let storybookUrl = pluginSettings.storybook_url;
+    let storybookPort = pluginSettings.port;
+    if (!storybookPort) {
+      const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) ?? [];
+
+      storybookPort = Number(port);
+    }
 
     const shouldRunStorybook = Boolean(pluginSettings.start_storybook);
 
     if (shouldRunStorybook) {
-      let storybookPort = pluginSettings.port;
-
-      if (!storybookPort) {
-        const [, port = '6006'] = STORYBOOK_PORT_RE.exec(launchUrl) ?? [];
-
-        storybookPort = Number(port);
-      }
-
-      // launch_url option can contain a link to the remote Storybook
-      // instance. In that case, we should make sure that we are going
-      // to run Storybook locally.
-      launchUrl = `http://localhost:${storybookPort}`;
+      storybookUrl = `http://localhost:${storybookPort}`;
 
       // eslint-disable-next-line no-console
-      console.info(`Starting storybook at: ${launchUrl}`);
+      console.info(`Starting storybook at: ${storybookUrl}`);
 
       storybookPid = spawn(path.resolve('node_modules/.bin/start-storybook'), ['-p', String(storybookPort)], {
         cwd: process.cwd()
       }).pid;
 
-      await waitOn({
-        resources: [launchUrl]
+      const result = await waitOn({
+        resources: [storybookUrl]
       });
+
     } else {
-      const isStorybookRunning = await checkStorybook(launchUrl);
+      const isStorybookRunning = await checkStorybook(storybookUrl);
 
       if (!isStorybookRunning) {
         console.error(
-          `Storybook is not running at ${chalk.bold(launchUrl)}.\n\n` +
+          `Storybook is not running at ${chalk.bold(storybookUrl)}.\n\n` +
           'You can configure Nightwatch to start it for you:\n\n' +
           chalk.bold.gray(
             '\tplugins: [\'@nightwatch/storybook\'],\n' +

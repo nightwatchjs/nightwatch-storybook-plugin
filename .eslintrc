@@ -1,9 +1,4 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
   "extends": [
     "eslint:recommended"
   ],
@@ -14,32 +9,6 @@
       "jsx": false
     }
   },
-  "overrides": [
-    {
-      "files": [
-        "*.ts"
-      ],
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": 1
-      },
-      "excludedFiles": [
-        "assets/**/*.ts"
-      ],
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
-      ],
-      "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {
-          "jsx": false
-        },
-        "project": "./tsconfig.json"
-      }
-    }
-  ],
   "env": {
     "mocha": true,
     "node": true
@@ -74,29 +43,11 @@
         "omitLastInOneLineBlock": true
       }
     ],
-
     "no-trailing-spaces": 0,
-    "no-else-return": 0,
+    "no-else-return": 2,
     "no-extra-bind": 0,
     "no-implicit-coercion": 0,
     "no-useless-call": 0,
-    "arrow-spacing": 2,
-    "space-before-blocks": [
-      "error",
-      {
-        "functions": "always",
-        "keywords": "always",
-        "classes": "always"
-      }
-    ],
-    "space-before-function-paren": [
-      "error",
-      {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
     "no-return-assign": 0,
     "eol-last": 0,
     "no-unused-vars": 0,
@@ -149,11 +100,15 @@
       {
         "SwitchCase": 1
       }
+    ],
+    "prefer-const": [
+      "warn"
     ]
   },
   "globals": {
     "Promise": true,
     "Proxy": true,
+    "Set": true,
     "Reflect": true,
     "element": "readonly",
     "by": "readonly",

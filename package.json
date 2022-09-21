@@ -1,22 +1,20 @@
 {
   "name": "@nightwatch/storybook",
   "version": "0.0.1",
-  "description": "Automatically create and run stories tests with Nightwatch",
+  "description": "Automatically run stories with Nightwatch",
   "keywords": [
     "storybook",
     "addons",
     "Nightwatch",
-    "plugin",
-    "test runner"
+    "plugin"
   ],
+
   "scripts": {
     "test": "nightwatch",
-    "prebuild": "del-cli storybook/* utils/* nightwatch/* index.js",
-    "build": "babel src --out-dir . --extensions \".ts\""
+    "eslint": "eslint lib nightwatch"
   },
   "files": [
-    "utils",
-    "storybook",
+    "lib",
     "nightwatch",
     "index.js",
     "LICENSE",
@@ -24,9 +22,6 @@
   ],
   "devDependencies": {
 		"eslint": "^8.17.0",
-    "@babel/cli": "^7.18.10",
-    "@babel/preset-env": "^7.18.10",
-    "@babel/preset-typescript": "^7.18.6",
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-interactions": "^6.5.10",
@@ -35,35 +30,22 @@
     "@storybook/manager-webpack4": "^6.5.10",
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
-    "@types/babel__generator": "^7.6.4",
-    "@types/dedent": "^0.7.0",
-    "@types/nightwatch": "^2.3.3",
-    "@types/node": "^18.6.3",
-    "@types/wait-on": "^5.3.1",
-    "babel-loader": "^8.2.5",
     "chromedriver": "^104.0.0",
-    "del-cli": "^4.0.0",
     "nightwatch": "^2.3.3",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-		"@typescript-eslint/eslint-plugin": "^5.37.0",
-		"@typescript-eslint/parser": "^5.37.0"
+    "react-dom": "^18.2.0"
 	},
   "peerDependencies": {
     "nightwatch": "^2.3.3"
   },
   "dependencies": {
-    "@babel/core": "^7.18.10",
-    "@babel/generator": "^7.18.10",
-    "@babel/types": "^7.18.10",
     "@storybook/core-common": "^6.5.10",
     "@storybook/csf-tools": "^6.5.10",
     "@storybook/store": "^6.5.10",
     "chalk": "^4.1.2",
-    "commander": "^9.4.0",
     "dedent": "^0.7.0",
-    "dotenv": "^16.0.1",
-    "wait-on": "^6.0.1"
+    "wait-on": "^6.0.1",
+    "nightwatch-esbuild-transform": "file:../nightwatch-esbuild-transform"
   }
 }

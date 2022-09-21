@@ -1,3 +1,4 @@
+const nightwatchESbuild = require('nightwatch-esbuild-transform');
 const metadata = require('../lib/storybook/metadata.js');
 const Csf = require('../lib/storybook/csf.js');
 
@@ -23,7 +24,8 @@ module.exports = async function() {
             data() {
               return moduleDescription.map(({name, ...rest}) => {
                 return {
-                  name: normalizeExportName(name), ...rest
+                  name: normalizeExportName(name),
+                  ...rest
                 };
               });
             },
@@ -44,6 +46,10 @@ module.exports = async function() {
               return async function(browser) {
                 await browser.renderStory(id, viewMode);
               };
+            },
+
+            requireTest(modulePath, options) {
+              return nightwatchESbuild.transform(modulePath, options);
             }
           };
         });
