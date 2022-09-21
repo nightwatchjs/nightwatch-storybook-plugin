@@ -10,19 +10,19 @@ module.exports = async function() {
   // for each location, load the stories and parse the result
 
   const promises = storyLocations.map((storiesPath) => {
-    // load all stories in this location
     return Csf.parse(storiesPath)
       .then(stories => {
-
         // for each story loaded, parse the format
         return stories.map(function(moduleDescription) {
           return {
+            id: moduleDescription.id,
+
             name(exportName) {
               return `"${exportName}" should render`;
             },
 
             data() {
-              return moduleDescription.map(({name, ...rest}) => {
+              return stories.map(({name, ...rest}) => {
                 return {
                   name: normalizeExportName(name),
                   ...rest
@@ -31,13 +31,11 @@ module.exports = async function() {
             },
 
             filter(modulePath) {
-              return moduleDescription.some(({storyPath}) => {
-                return modulePath === storyPath;
-              });
+              return modulePath === moduleDescription.storyPath;
             },
 
             exports() {
-              return moduleDescription.map(({name}) => normalizeExportName(name));
+              return stories.map(({name}) => normalizeExportName(name));
             },
 
             async createTest({exportName, data}) {
@@ -56,5 +54,14 @@ module.exports = async function() {
       });
   });
 
-  return Promise.all(promises);
+  const result = await Promise.all(promises).then(result => {
+
+    return result.reduce((prev, value) => {
+      prev.push(...value);
+
+      return prev;
+    }, []);
+  });
+
+  return result;
 };
