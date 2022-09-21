@@ -24,6 +24,7 @@ module.exports = {
       storybookPort = Number(port);
     }
 
+    this.storybookUrl = storybookUrl;
     const shouldRunStorybook = Boolean(pluginSettings.start_storybook);
 
     if (shouldRunStorybook) {

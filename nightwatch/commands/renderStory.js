@@ -1,6 +1,16 @@
 module.exports = class RenderStoryCommand {
-  command(storyId, viewMode) {
 
+  get storybookUrl() {
+    const {storybookUrl} = this.api.globals;
+
+    if (storybookUrl.charAt(storybookUrl.length - 1) === '/') {
+      return storybookUrl.substring(0, storybookUrl.length - 1);
+    }
+
+    return storybookUrl;
+  }
+
+  command(storyId, viewMode) {
     this.api
       .navigateTo(this._getStoryUrl(storyId, viewMode))
       .executeAsyncScript(this._getClientScript(), [
@@ -21,6 +31,8 @@ module.exports = class RenderStoryCommand {
         if (result.value && result.value.name === 'StorybookTestRunnerError') {
           throw new Error(result.value.message);
         }
+
+        this.assert.ok(!!result.value, `component with storyId ${storyId} was rendered successfully.`);
       })
       .pause(this.client.argv.debug ? 0 : 1);
   }
@@ -134,6 +146,6 @@ module.exports = class RenderStoryCommand {
   }
 
   _getStoryUrl(storyId, viewMode) {
-    return `/iframe.html?viewMode=${viewMode}&id=${storyId}`;
+    return `${this.storybookUrl}/iframe.html?viewMode=${viewMode}&id=${storyId}`;
   }
 };

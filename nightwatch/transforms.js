@@ -38,7 +38,7 @@ module.exports = async function() {
               return stories.map(({name}) => normalizeExportName(name));
             },
 
-            async createTest({exportName, data}) {
+            createTest: async function({exportName, data}) {
               const {id, viewMode} = data.find(({name}) => name === exportName);
 
               return async function(browser) {
