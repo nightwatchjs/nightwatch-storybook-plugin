@@ -10,7 +10,6 @@ let storybookPid = null;
 
 module.exports = {
   async before() {
-
     const pluginSettings = Object.assign({
       start_storybook: false,
       storybook_url: 'http://localhost:6006/'
@@ -19,7 +18,7 @@ module.exports = {
     let storybookUrl = pluginSettings.storybook_url;
     let storybookPort = pluginSettings.port;
     if (!storybookPort) {
-      const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) ?? [];
+      const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) || [];
 
       storybookPort = Number(port);
     }
@@ -37,7 +36,7 @@ module.exports = {
         cwd: process.cwd()
       }).pid;
 
-      const result = await waitOn({
+      await waitOn({
         resources: [storybookUrl]
       });
 

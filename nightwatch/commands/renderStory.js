@@ -10,16 +10,14 @@ module.exports = class RenderStoryCommand {
     return storybookUrl;
   }
 
-  command(storyId, viewMode) {
+  command(storyId, viewMode, data = {}) {
     this.api
       .navigateTo(this._getStoryUrl(storyId, viewMode))
-      .executeAsyncScript(this._getClientScript(), [
-        {
-          baseUrl: this.api.launchUrl,
-          storyId,
-          viewMode
-        }
-      ], function(response) {
+      .executeAsyncScript(this._getClientScript(), [{
+        baseUrl: this.storybookUrl,
+        storyId,
+        viewMode
+      }], (response) => {
         const result = response.value || {};
 
         if (result.value === null) {
@@ -32,9 +30,35 @@ module.exports = class RenderStoryCommand {
           throw new Error(result.value.message);
         }
 
-        this.assert.ok(!!result.value, `component with storyId ${storyId} was rendered successfully.`);
+        this.api.assert.ok(!!result.value, `component with storyId ${storyId}.${data.exportName} was rendered successfully.`);
       })
       .pause(this.client.argv.debug ? 0 : 1);
+
+    const {a11yConfig} = data;
+    if (a11yConfig) {
+      this.api
+        .axeInject()
+        .axeRun('body', {
+          runAssertions: false,
+          ...a11yConfig.config
+        }, (results) => {
+          if (results.error) {
+            throw new Error(`Error while running accessibility tests: axeRun(): ${results.error}`);
+          }
+
+          const {passes, violations} = results;
+          this.client.reporter.setAxeResults({
+            passes,
+            violations,
+            component: `${storyId}.${data.exportName}`
+          });
+          this.client.reporter.printA11yReport();
+
+          if (results.violations.length > 0) {
+            this.api.verify.fail('There are accessibility violations. Please see the complete report for details.');
+          }
+        });
+    }
   }
 
   /**

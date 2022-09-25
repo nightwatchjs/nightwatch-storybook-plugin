@@ -1,4 +1,4 @@
-const nightwatchESbuild = require('nightwatch-esbuild-transform');
+const EsbuildUtils = require('@nightwatch/esbuild-utils');
 const metadata = require('../lib/storybook/metadata.js');
 const Csf = require('../lib/storybook/csf.js');
 
@@ -22,12 +22,7 @@ module.exports = async function() {
             },
 
             data() {
-              return stories.map(({name, ...rest}) => {
-                return {
-                  name: normalizeExportName(name),
-                  ...rest
-                };
-              });
+              return moduleDescription;
             },
 
             filter(modulePath) {
@@ -39,15 +34,15 @@ module.exports = async function() {
             },
 
             createTest: async function({exportName, data}) {
-              const {id, viewMode} = data.find(({name}) => name === exportName);
+              const {id, viewMode} = data;
 
               return async function(browser) {
-                await browser.renderStory(id, viewMode);
+                await browser.renderStory(id, viewMode, data);
               };
             },
 
             requireTest(modulePath, options) {
-              return nightwatchESbuild.transform(modulePath, options);
+              return EsbuildUtils.run(modulePath, options);
             }
           };
         });
