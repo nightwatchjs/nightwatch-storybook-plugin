@@ -8,7 +8,6 @@
     "Nightwatch",
     "plugin"
   ],
-
   "scripts": {
     "test": "nightwatch",
     "eslint": "eslint lib nightwatch"
@@ -21,7 +20,6 @@
     "README.md"
   ],
   "devDependencies": {
-		"eslint": "^8.17.0",
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-interactions": "^6.5.10",
@@ -31,21 +29,23 @@
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
     "chromedriver": "^104.0.0",
+    "eslint": "^8.17.0",
     "nightwatch": "^2.3.3",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-	},
+  },
   "peerDependencies": {
     "nightwatch": "^2.3.3"
   },
   "dependencies": {
+    "@nightwatch/esbuild-utils": "file:../nightwatch-esbuild-transform",
     "@storybook/core-common": "^6.5.10",
     "@storybook/csf-tools": "^6.5.10",
     "@storybook/store": "^6.5.10",
     "chalk": "^4.1.2",
     "dedent": "^0.7.0",
-    "wait-on": "^6.0.1",
-    "@nightwatch/esbuild-utils": "^0.1.1"
+    "jsdom": "^20.0.0",
+    "wait-on": "^6.0.1"
   }
 }

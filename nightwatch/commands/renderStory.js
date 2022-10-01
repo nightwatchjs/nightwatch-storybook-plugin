@@ -1,7 +1,17 @@
 module.exports = class RenderStoryCommand {
 
   get storybookUrl() {
-    const {storybookUrl} = this.api.globals;
+    const pluginSettings = Object.assign({
+      start_storybook: false,
+      storybook_url: 'http://localhost:6006/'
+    }, this.client.settings['@nightwatch/storybook']);
+
+    const storybookUrl = pluginSettings.storybook_url;
+
+    if (this.client.settings.live_url) {
+      return `${this.client.settings.live_url}&url=http://localhost:6006`;
+    }
+
 
     if (storybookUrl.charAt(storybookUrl.length - 1) === '/') {
       return storybookUrl.substring(0, storybookUrl.length - 1);
@@ -10,8 +20,8 @@ module.exports = class RenderStoryCommand {
     return storybookUrl;
   }
 
-  command(storyId, viewMode, data = {}) {
-    this.api
+  async command(storyId, viewMode, data = {}) {
+    const component = await this.api
       .navigateTo(this._getStoryUrl(storyId, viewMode))
       .executeAsyncScript(this._getClientScript(), [{
         baseUrl: this.storybookUrl,
@@ -30,13 +40,27 @@ module.exports = class RenderStoryCommand {
           throw new Error(result.value.message);
         }
 
-        this.api.assert.ok(!!result.value, `component with storyId ${storyId}.${data.exportName} was rendered successfully.`);
-      })
-      .pause(this.client.argv.debug ? 0 : 1);
+        this.api.assert.ok(!!result.value, `"${storyId}.${data.exportName}" story was rendered successfully.`);
+
+        const element = this.api.createElement(result.value, {
+          isComponent: true
+        });
+        element.toString = function() {
+          return `${storyId}.${data.exportName}`;
+        };
+
+        return element;
+      });
+
+    if (this.client.argv.debug) {
+      await this.api.debug();
+    } else if (this.client.argv.preview) {
+      await this.api.pause();
+    }
 
     const {a11yConfig} = data;
     if (a11yConfig) {
-      this.api
+      await this.api
         .axeInject()
         .axeRun('body', {
           runAssertions: false,
@@ -59,6 +83,8 @@ module.exports = class RenderStoryCommand {
           }
         });
     }
+
+    return component;
   }
 
   /**

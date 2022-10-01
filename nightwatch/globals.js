@@ -3,13 +3,45 @@ const path = require('path');
 const chalk = require('chalk');
 const waitOn = require('wait-on');
 const checkStorybook = require('./_utils/checkStorybook.js');
+const metadata = require('../lib/storybook/metadata.js');
 
 const STORYBOOK_PORT_RE = /(?:localhost|127.0.0.1):(\d+)\/?$/;
 
 let storybookPid = null;
 
+const getStorybookUrl = function() {
+  const pluginSettings = Object.assign({
+    start_storybook: false,
+    storybook_url: 'http://localhost:6006/'
+  }, this.settings['@nightwatch/storybook']);
+
+
+  return pluginSettings.storybook_url;
+};
+
 module.exports = {
-  async before() {
+  beforeEach() {
+    // child processes don't have access to the context from the before() hook
+    this.storybookUrl = getStorybookUrl.call(this);
+
+    this.component_tests_mode = true;
+  },
+
+  async before(settings) {
+    this.component_tests_mode = true;
+
+    settings.src_folders = settings.src_folders || [];
+
+    if (settings.src_folders.length === 0) {
+      const stories = metadata().normalizedStoriesEntries.filter(entry => {
+        return !entry.files.endsWith('.mdx');
+      });
+
+      settings.src_folders.push(...stories.map(entry => {
+        return path.join(entry.directory, entry.files);
+      }));
+    }
+
     const pluginSettings = Object.assign({
       start_storybook: false,
       storybook_url: 'http://localhost:6006/'
@@ -24,6 +56,7 @@ module.exports = {
     }
 
     this.storybookUrl = storybookUrl;
+
     const shouldRunStorybook = Boolean(pluginSettings.start_storybook);
 
     if (shouldRunStorybook) {
@@ -44,7 +77,8 @@ module.exports = {
       const isStorybookRunning = await checkStorybook(storybookUrl);
 
       if (!isStorybookRunning) {
-        console.error(
+        // eslint-disable-next-line
+        console.warn(
           `Storybook is not running at ${chalk.bold(storybookUrl)}.\n\n` +
           'You can configure Nightwatch to start it for you:\n\n' +
           chalk.bold.gray(
@@ -55,8 +89,6 @@ module.exports = {
             '\t}'
           )
         );
-
-        process.exit(1);
       }
     }
   },
