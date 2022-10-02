@@ -1,7 +1,11 @@
 {
   "name": "@nightwatch/storybook",
   "version": "0.0.1",
-  "description": "Automatically run stories with Nightwatch",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Andrei Rusu",
+  "description": "Automatically integrate Storybook and run stories directly with Nightwatch",
   "keywords": [
     "storybook",
     "addons",
@@ -36,7 +40,7 @@
     "react-dom": "^18.2.0"
   },
   "peerDependencies": {
-    "nightwatch": "^2.3.3"
+    "nightwatch": "^2.3.9.dev1"
   },
   "dependencies": {
     "@nightwatch/esbuild-utils": "0.1.2",
