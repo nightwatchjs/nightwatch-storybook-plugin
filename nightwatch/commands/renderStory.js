@@ -63,7 +63,7 @@ module.exports = class RenderStoryCommand {
       await this.api
         .axeInject()
         .axeRun('body', {
-          runAssertions: false,
+          runAssertions: a11yConfig.verbose,
           ...a11yConfig.config
         }, (results) => {
           if (results.error) {
@@ -79,7 +79,11 @@ module.exports = class RenderStoryCommand {
           this.client.reporter.printA11yReport();
 
           if (results.violations.length > 0) {
-            this.api.verify.fail('There are accessibility violations. Please see the complete report for details.');
+            const err = new Error('There are accessibility violations; please see the complete report for details.');
+            err.showTrace = false;
+            err.link = 'https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md';
+
+            this.api.verify.fail(err);
           }
         });
     }
