@@ -34,7 +34,7 @@
     "@storybook/manager-webpack4": "^6.5.10",
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
-    "chromedriver": "^106.0.1",
+    "chromedriver": "^105.0.1",
     "eslint": "^8.17.0",
     "nightwatch": "2.4.0-preview.1",
     "nightwatch-axe-verbose": "^2.0.3",
