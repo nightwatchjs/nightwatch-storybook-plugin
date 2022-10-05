@@ -1,3 +1,11 @@
+class NightwatchAssertError extends Error {
+  constructor(message) {
+    super(message);
+
+    this.name = 'NightwatchAssertError';
+  }
+}
+
 module.exports = class RenderStoryCommand {
 
   get storybookUrl() {
@@ -21,42 +29,48 @@ module.exports = class RenderStoryCommand {
   }
 
   async command(storyId, viewMode, data = {}) {
-    const component = await this.api
-      .navigateTo(this._getStoryUrl(storyId, viewMode))
-      .executeAsyncScript(this._getClientScript(), [{
-        baseUrl: this.storybookUrl,
-        storyId,
-        viewMode
-      }], (response) => {
-        const result = response.value || {};
-
-        if (result.value === null) {
-          throw new Error(
-            'Could not render the story. Run nightwatch with --devtools and --debug flags (Chrome only) and investigate the error in the browser console.'
-          );
-        }
-
-        if (result.value && result.value.name === 'StorybookTestRunnerError') {
-          throw new Error(result.value.message);
-        }
-
-        this.api.assert.ok(!!result.value, `"${storyId}.${data.exportName}" story was rendered successfully.`);
-
-        const element = this.api.createElement(result.value, {
-          isComponent: true
-        });
-        element.toString = function() {
-          return `${storyId}.${data.exportName}`;
-        };
-
-        return element;
-      });
+    await this.api.navigateTo(this._getStoryUrl(storyId, viewMode));
 
     if (this.client.argv.debug) {
       await this.api.debug();
     } else if (this.client.argv.preview) {
       await this.api.pause();
     }
+
+    const component = await this.api.executeAsyncScript(this._getClientScript(), [{
+      baseUrl: this.storybookUrl,
+      storyId,
+      viewMode
+    }], (response) => {
+      const result = response.value || {};
+
+      if (result.value === null) {
+        const err = new NightwatchAssertError('Could not mount the component story.');
+
+        err.showTrace = false;
+        err.help = [
+          'run nightwatch with --devtools and --debug flags (Chrome only)',
+          'investigate the error in the browser console'
+        ];
+
+        return err;
+      }
+
+      if (result.value && result.value.name === 'StorybookTestRunnerError') {
+        throw new Error(result.value.message);
+      }
+
+      this.api.assert.ok(!!result.value, `"${storyId}.${data.exportName}" story was rendered successfully.`);
+
+      const element = this.api.createElement(result.value, {
+        isComponent: true
+      });
+      element.toString = function() {
+        return `${storyId}.${data.exportName}`;
+      };
+
+      return element;
+    });
 
     const {a11yConfig} = data;
     if (a11yConfig) {
@@ -72,6 +86,7 @@ module.exports = class RenderStoryCommand {
 
           const {passes, violations} = results;
           this.client.reporter.setAxeResults({
+            verbose: a11yConfig.verbose,
             passes,
             violations,
             component: `${storyId}.${data.exportName}`
@@ -148,12 +163,12 @@ module.exports = class RenderStoryCommand {
         return root.firstElementChild;
       }
 
-      channel.on(renderedEvent, function() {
-        waitFor({
+      stamp = setTimeout(function() {
+        done({
           event: renderedEvent,
           value: getRootChild()
         });
-      });
+      }, 200);
 
       channel.on('storyUnchanged', function() {
         waitFor({
@@ -190,11 +205,6 @@ module.exports = class RenderStoryCommand {
           event: 'playFunctionThrewException',
           value: StorybookTestRunnerError(error.message)
         });
-      });
-
-      channel.emit('forceRemount', {
-        storyId: options.storyId,
-        viewMode: options.viewMode
       });
     };
   }

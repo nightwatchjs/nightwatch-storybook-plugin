@@ -48,12 +48,8 @@ module.exports = {
     }, this.settings['@nightwatch/storybook']);
 
     let storybookUrl = pluginSettings.storybook_url;
-    let storybookPort = pluginSettings.port;
-    if (!storybookPort) {
-      const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) || [];
-
-      storybookPort = Number(port);
-    }
+    const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) || [];
+    const storybookPort = Number(port);
 
     this.storybookUrl = storybookUrl;
 
@@ -63,15 +59,18 @@ module.exports = {
       storybookUrl = `http://localhost:${storybookPort}`;
 
       // eslint-disable-next-line no-console
-      console.info(`Starting storybook at: ${storybookUrl}`);
+      console.info(chalk.dim(` Starting storybook at: ${storybookUrl}...`));
 
-      storybookPid = spawn(path.resolve('node_modules/.bin/start-storybook'), ['-p', String(storybookPort)], {
+      storybookPid = spawn(path.resolve('node_modules/.bin/start-storybook'), ['--no-open', '-p', String(storybookPort)], {
         cwd: process.cwd()
       }).pid;
 
       await waitOn({
         resources: [storybookUrl]
       });
+
+      // eslint-disable-next-line no-console
+      console.info(chalk.dim(' ℹ Storybook running.'));
 
     } else {
       const isStorybookRunning = await checkStorybook(storybookUrl);
@@ -82,13 +81,14 @@ module.exports = {
           `Storybook is not running at ${chalk.bold(storybookUrl)}.\n\n` +
           'You can configure Nightwatch to start it for you:\n\n' +
           chalk.bold.gray(
-            '\tplugins: [\'@nightwatch/storybook\'],\n' +
+            '\tplugins: [\'@nightwatch/storybook\'],\n\n' +
             '\t\'@nightwatch/storybook\': {\n' +
             '\t  start_storybook: true,\n' +
             '\t  port: 6006 // default\n' +
             '\t}'
           )
         );
+        process.exit(1);
       }
     }
   },

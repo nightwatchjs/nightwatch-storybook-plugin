@@ -1,4 +1,4 @@
-const EsbuildUtils = require('@nightwatch/esbuild-utils');
+const {run} = require('@nightwatch/esbuild-utils');
 const jsdom = require('jsdom');
 const path = require('path');
 const metadata = require('../lib/storybook/metadata.js');
@@ -18,6 +18,7 @@ module.exports = function() {
     return {
       storiesPath,
 
+      showBrowserConsole: true,
       name(exportName) {
         const data = stories.find(story => {
           const normalizedName = normalizeExportName(story.name);
@@ -56,9 +57,9 @@ module.exports = function() {
         const {id, viewMode} = data;
 
         return async function(browser) {
-          const instance = await browser.renderStory(id, viewMode, data);
+          const element = await browser.renderStory(id, viewMode, data);
 
-          return instance;
+          return {component: element};
         };
       },
 
@@ -74,7 +75,7 @@ module.exports = function() {
       requireTest(modulePath, options, {argv, nightwatch_settings}) {
         global.window = (new jsdom.JSDOM('')).window;
 
-        return EsbuildUtils.run(modulePath, options, {argv, nightwatch_settings});
+        return run(modulePath, options, {argv, nightwatch_settings});
       }
     };
   });
