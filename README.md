@@ -67,7 +67,7 @@ Edit your `nightwatch.conf.js` and configure it as follows:
 
 ```
 module.exports = {
-  src_folders: ['stories/*.stories.jsx'],
+  src_folders: ['src/stories/*.stories.jsx'],
   
   '@nightwatch/storybook': {
     start_storybook: true,
@@ -158,7 +158,7 @@ The example contains two stories and it can be run by Nightwatch as a regular te
 For the best developer experience available at the moment, we recommend to use Chrome, however you can use any of the other browsers that Nightwatch supports as well. 
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome
+npx nightwatch src/stories/Form.stories.jsx --env chrome
 ```
 
 #### Running a specific story
@@ -167,7 +167,7 @@ You can run a specific story from a given `.stories.jsx` file by using the `--st
 Say you want to run only the `FilledForm` story. This will mount it and also execute the `play()` and `test()` functions accordingly:
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome --story=FilledForm
+npx nightwatch src/stories/Form.stories.jsx --env chrome --story=FilledForm
 ```
 
 ### Run stories in parallel
@@ -176,7 +176,7 @@ It may be useful to run the stories in parallel for optimizing the speed of exec
 To run, for example, using 4 test worker processes (in headless mode):
 
 ```sh
-npx nightwatch ./stories/**.stories.jsx --env chrome --parallel=4 --headless
+npx nightwatch ./src/stories/**.stories.jsx --env chrome --parallel=4 --headless
 ```
 
 The output should look as follows:
@@ -297,7 +297,7 @@ To launch the `FilledForm` story in preview mode, run:
 <details>
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome --story=FilledForm --preview 
+npx nightwatch src/stories/Form.stories.jsx --env chrome --story=FilledForm --preview 
 ```
 </details>
 
@@ -306,7 +306,7 @@ Pass the `--devtools` flag to open the Chrome Devtools:
 <details>
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome --story=FilledForm --preview --devtools
+npx nightwatch src/stories/Form.stories.jsx --env chrome --story=FilledForm --preview --devtools
 ```
 </details>
 
@@ -315,7 +315,7 @@ You can of course use the Nightwatch built-in parallelism to open the story in b
 <details>
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome,firefox --story=FilledForm --preview 
+npx nightwatch src/stories/Form.stories.jsx --env chrome,firefox --story=FilledForm --preview 
 ```
 </details>
 
@@ -364,7 +364,7 @@ FilledForm.test = async (browser, { component }) => {
 Run the example and observe the breakpoint in the Chrome devtools console.
 
 ```sh
-npx nightwatch Form.stories.jsx --env chrome --devtools --debug --story=FilledForm 
+npx nightwatch src/stories/Form.stories.jsx --env chrome --devtools --debug --story=FilledForm 
 ```
 
 <details>
@@ -479,7 +479,7 @@ One of the Button component story will fail the `"color-contrast"` accessibility
 Run the following to see the result:
 
 ```sh
-npx nightwatch stories/Button.stories.jsx -e chrome
+npx nightwatch src/stories/Button.stories.jsx -e chrome
 ```
 
 The output from Nightwatch should be:
