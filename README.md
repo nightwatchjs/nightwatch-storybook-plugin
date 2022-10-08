@@ -48,10 +48,8 @@ We also recommend installing a few essential Storybook addons:
 Install Nightwatch in the same project. This plugin requires Nightwatch v2.4 or higher.
 
 ```sh
-npm i nightwatch chromedriver geckodriver --save-dev
+npm init nightwatch
 ```
-
-`chromedriver` and `geckodriver` are needed to run tests in Chrome and Firefox respectively.
 
 Head over to the Nightwatch [installation guide](https://nightwatchjs.org/guide/quickstarts/create-and-run-a-nightwatch-test.html) for more details.
 
