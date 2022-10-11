@@ -411,6 +411,10 @@ export default {
   argTypes: {
     backgroundColor: { control: "color" },
   },
+  /**
+   * BEGINNING OF NEW A11Y RULES
+   * 
+   */
   parameters: {
     a11y: {
       // Optional selector to inspect
@@ -447,6 +451,10 @@ export default {
       manual: true,
     },
   }
+  /**
+   * 
+   * END OF NEW A11Y RULES
+   */
 };
 
 const Template = (args) => <Button {...args} />;
