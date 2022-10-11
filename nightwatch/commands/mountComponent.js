@@ -89,7 +89,6 @@ module.exports = class RenderStoryCommand {
     return function(options, done) {
       let stamp = null;
 
-      console.log('_getClientScript', options);
       const renderedEvent = 'docsRendered';
 
       function waitFor(result) {
@@ -129,7 +128,6 @@ module.exports = class RenderStoryCommand {
         // eslint-disable-next-line no-undef
         const root = document.querySelector('#docs-root');
 
-        console.log('getRootChild', root)
         if (!root) {
           return null;
         }
