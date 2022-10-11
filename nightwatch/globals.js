@@ -15,7 +15,6 @@ const getStorybookUrl = function() {
     storybook_url: 'http://localhost:6006/'
   }, this.settings['@nightwatch/storybook']);
 
-
   return pluginSettings.storybook_url;
 };
 
@@ -83,8 +82,8 @@ module.exports = {
           chalk.bold.gray(
             '\tplugins: [\'@nightwatch/storybook\'],\n\n' +
             '\t\'@nightwatch/storybook\': {\n' +
-            '\t  start_storybook: true,\n' +
-            '\t  port: 6006 // default\n' +
+            '\t  start_storybook: false, // set this to true if you would like Nightwatch to start Storybook automatically\n' +
+            '\t  storybook_url: \'http://localhost:6006/\' // default\n' +
             '\t}'
           )
         );

@@ -77,7 +77,7 @@ module.exports = class RenderStoryCommand {
       await this.api
         .axeInject()
         .axeRun('body', {
-          runAssertions: a11yConfig.verbose,
+          runAssertions: a11yConfig.runAssertions || false,
           ...a11yConfig.config
         }, (results) => {
           if (results.error) {

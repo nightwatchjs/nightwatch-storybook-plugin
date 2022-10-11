@@ -73,7 +73,10 @@ module.exports = function() {
       },
 
       requireTest(modulePath, options, {argv, nightwatch_settings}) {
-        global.window = (new jsdom.JSDOM('')).window;
+        const jsdomObject = new jsdom.JSDOM('');
+        global.window = jsdomObject.window;
+        global.document = jsdomObject.window.document;
+        global.navigator = jsdomObject.window.navigator;
 
         return run(modulePath, options, {argv, nightwatch_settings});
       }
