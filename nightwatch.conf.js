@@ -1,5 +1,5 @@
 module.exports = {
-  src_folders: ['stories/*.stories.jsx'],
+  src_folders: ['stories/*.stories.jsx', 'tests'],
 
   // See https://nightwatchjs.org/guide/extending-nightwatch/custom-commands.html
   custom_commands_path: [
@@ -27,7 +27,11 @@ module.exports = {
         on_failure: true
       },
       desiredCapabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          w3c: true,
+          args: []
+        }
       },
       webdriver: {
         start_process: true,
