@@ -415,6 +415,10 @@ export default {
     a11y: {
       // Optional selector to inspect
       element: '#root',
+      
+      // Show the individual axe-rules as Nightwatch assertions (can be verbose if there are many violations)
+      runAssertions: false,
+      
       // Show the complete Acccessibilty test report (by default, only rule violations will be shown)
       verbose: false,
       config: {
