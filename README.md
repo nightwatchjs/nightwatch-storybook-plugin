@@ -63,13 +63,27 @@ The `@nightwatch/storybook` plugin supports a few configuration options:
 
 Edit your `nightwatch.conf.js` and configure it as follows:
 
+- **`src_folders`**
+  By default Nightwatch tries to use the location defined in the `main.js` inside the storybook config folder. This can define the specific location(s) to where the stories are located.
+
+The following options need to be set under the specific `'@nightwatch/storybook'` dictionary:
+
+- **`start_storybook`** – whether Nightwatch should manage the Storybook server automatically (default `false`)
+- **`storybook_url`** – can be changed if Storybook is running on a different port/hostname (default `http://localhost:6006/`)
+- **`storybook_config_dir`** - default is `.storybook`
+- **`hide_csf_errors`** - Nightwatch tries to ignore the CSF parsing errors and displays a warning; setting this to `true` will hide these warnings (default is `false`)
+
+**Examples:**
+
 ```
 module.exports = {
   src_folders: ['src/stories/*.stories.jsx'],
   
   '@nightwatch/storybook': {
-    start_storybook: true,
-    storybook_url: 'http://localhost:6006/'
+    start_storybook: false,
+    storybook_url: 'http://localhost:6006/',
+    storybook_config_dir: '.storybook', // default storybook config directory
+    hide_csf_errors: false
   }
 }
 ```
