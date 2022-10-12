@@ -47,7 +47,7 @@
     "nightwatch": "^2.4.0-preview.1"
   },
   "dependencies": {
-    "@nightwatch/esbuild-utils": "file:../nightwatch-esbuild-transform/",
+    "@nightwatch/esbuild-utils": "0.1.7",
     "@storybook/core-common": "^6.5.12",
     "@storybook/csf-tools": "^6.5.12",
     "@storybook/store": "^6.5.12",
