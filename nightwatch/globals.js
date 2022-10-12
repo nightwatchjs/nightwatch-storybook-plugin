@@ -4,16 +4,14 @@ const chalk = require('chalk');
 const waitOn = require('wait-on');
 const checkStorybook = require('./_utils/checkStorybook.js');
 const metadata = require('../lib/storybook/metadata.js');
+const defaultSettings = require('../lib/settings.js');
 
 const STORYBOOK_PORT_RE = /(?:localhost|127.0.0.1):(\d+)\/?$/;
 
 let storybookPid = null;
 
 const getStorybookUrl = function() {
-  const pluginSettings = Object.assign({
-    start_storybook: false,
-    storybook_url: 'http://localhost:6006/'
-  }, this.settings['@nightwatch/storybook']);
+  const pluginSettings = Object.assign(defaultSettings, this.settings['@nightwatch/storybook'] || {});
 
   return pluginSettings.storybook_url;
 };
@@ -41,10 +39,7 @@ module.exports = {
       }));
     }
 
-    const pluginSettings = Object.assign({
-      start_storybook: false,
-      storybook_url: 'http://localhost:6006/'
-    }, this.settings['@nightwatch/storybook']);
+    const pluginSettings = Object.assign(defaultSettings, this.settings['@nightwatch/storybook'] || {});
 
     let storybookUrl = pluginSettings.storybook_url;
     const [, port = '6006'] = STORYBOOK_PORT_RE.exec(storybookUrl) || [];

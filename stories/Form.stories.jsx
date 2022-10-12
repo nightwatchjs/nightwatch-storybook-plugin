@@ -5,20 +5,22 @@ export default {
   title: 'Form',
   component: Form,
 
-  async before(browser) {
-    // console.log('before hook', browser.capabilities)
-  },
+  test: {
+    async before(browser) {
+      // console.log('before hook', browser.capabilities)
+    },
 
-  async beforeEach(browser) {
-    // console.log('beforeEach hook')
-  },
+    async beforeEach(browser) {
+      // console.log('beforeEach hook')
+    },
 
-  async after(browser) {
-    // console.log('after hook')
-  },
+    async after(browser) {
+      // console.log('after hook')
+    },
 
-  async afterEach(browser) {
-    // console.log('afterEach hook')
+    async afterEach(browser) {
+      // console.log('afterEach hook')
+    }
   }
 }
 
@@ -40,7 +42,8 @@ FilledForm.play = async ({ canvasElement }) => {
   await userEvent.click(canvas.getByRole('button'));
 };
 
+
+// 👇 Run commands and assertions in the Nightwatch context
 FilledForm.test = async (browser, { component }) => {
-  // 👇 Run commands and assertions in the Nightwatch context
   await expect(component).to.be.visible;
 }

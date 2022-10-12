@@ -8,6 +8,8 @@ module.exports = {
 
   '@nightwatch/storybook': {
     start_storybook: true,
+    storybook_config_dir: '.storybook',
+    hide_csf_errors: true,
     storybook_url: 'http://localhost:6006/'
   },
 
