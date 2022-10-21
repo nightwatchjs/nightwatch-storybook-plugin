@@ -8,7 +8,7 @@ The official **@nightwatch/storybook** plugin provides seamless integration betw
 
 ---
 
-## Installation
+# Installation
 
 The Storybook plugin for Nightwatch can be installed from NPM with:
 
@@ -27,7 +27,7 @@ module.exports = {
 }
 ```
 
-### Prerequisites 
+## Prerequisites 
 The plugin can be used in an **existing** Storybook project for React. If you're starting from scratch and you'd just like to check out some examples quickly, head over to our **storybook-example-project** which has a few basic React components.  
 
 #### 1. Setup Storybook
@@ -54,7 +54,7 @@ npm init nightwatch
 Head over to the Nightwatch [installation guide](https://nightwatchjs.org/guide/quickstarts/create-and-run-a-nightwatch-test.html) for more details.
 
 --- 
-## Configuration
+# Configuration
 
 The `@nightwatch/storybook` plugin supports a few configuration options: 
 - Nightwatch can start/stop the storybook server for you, if needed (which can be useful when running in CI).
@@ -89,13 +89,14 @@ module.exports = {
 ```
 
 ---
-## Usage
 
-### → Run your existing stories in Nightwatch
+# Usage
+
+## → Run your existing stories in Nightwatch
 
 There is no need to start writing additional tests and import stories in them. Nightwatch supports the [Component Story Format](https://storybook.js.org/docs/react/api/csf) (CSF) so it is able to run the stories directly.
 
-### → Extend component stories with new testing capabilities
+## → Extend component stories with new testing capabilities
 
 Nightwatch is able to detect and run any existing interaction tests (using the `play()` function) and accessibility tests which are defined in the component story.
 
@@ -117,7 +118,7 @@ Read more on:
 - [Component story format](https://storybook.js.org/docs/react/api/csf) (CSF)
     - [Component Story Format 3.0](https://storybook.js.org/blog/component-story-format-3-0/)
     
-### Example
+## Example
 Considering a basic `Form.jsx` component, here's how its `Form.stories.jsx` story would look like, written in CSF and extended with Nightwatch functionality:
 
 ```jsx
@@ -170,7 +171,8 @@ FilledForm.test = async (browser, { component }) => {
 }
 ```
 ---
-## Run stories with Nightwatch
+
+# Run stories with Nightwatch
 
 The example contains two stories and it can be run by Nightwatch as a regular test.
 
@@ -306,7 +308,7 @@ Launching up to 4 concurrent test worker processes...
 </details>
 
 
-## Preview stories using Nightwatch
+# Preview stories using Nightwatch
 
 Nightwatch provides the ability to run a `.stories.jsx` file in preview mode (using the `--preview` CLI argument) which would only open the Storybook renderer and pause the execution indefinitely. 
 
@@ -338,7 +340,7 @@ npx nightwatch src/stories/Form.stories.jsx --env chrome,firefox --story=FilledF
 ```
 </details>
 
-## Debugging stories using Nightwatch
+# Debugging stories using Nightwatch
 
 In addition to previewing the story, it's also possible to use Nightwatch to debug the story. To do this, enable the `--debug` and `--devtools` CLI flags and use the `debugger` to add breakpoints inside the `play()` function.
 
@@ -393,7 +395,8 @@ npx nightwatch src/stories/Form.stories.jsx --env chrome --devtools --debug --st
 You can also use the integrated Nightwatch debug console to issue commands from Nightwatch.
 
 ---
-## Accessibility testing (A11y) with Storybook + Nightwatch
+  
+# Accessibility testing (A11y) with Storybook + Nightwatch
 
 Both Storybook and Nightwatch rely internally on the same accessibility testing tools developed by [Deque Systems](https://www.deque.com/axe/) and published in NPM as the [`axe-core`](https://www.npmjs.com/package/axe-core) library.
 
