@@ -111,6 +111,8 @@
     "Set": true,
     "Reflect": true,
     "element": "readonly",
+    "document": "readonly",
+    "window": "readonly",
     "by": "readonly",
     "expect": "readonly",
     "browser": "readonly",
