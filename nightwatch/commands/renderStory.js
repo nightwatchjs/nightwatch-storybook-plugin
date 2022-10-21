@@ -1,8 +1,8 @@
-class NightwatchAssertError extends Error {
+class NightwatchMountError extends Error {
   constructor(message) {
     super(message);
 
-    this.name = 'NightwatchAssertError';
+    this.name = 'NightwatchMountError';
   }
 }
 
@@ -28,14 +28,108 @@ module.exports = class RenderStoryCommand {
     return storybookUrl;
   }
 
-  async command(storyId, viewMode, data = {}) {
-    await this.api.navigateTo(this._getStoryUrl(storyId, viewMode));
+  getError(message) {
+    const err = new NightwatchMountError(message);
 
-    if (this.client.argv.debug) {
+    err.showTrace = false;
+    err.help = [
+      'run nightwatch with --devtools and --debug flags (Chrome only)',
+      'investigate the error in the browser console'
+    ];
+
+    return err;
+  }
+
+  async command(storyId, viewMode, data = {}) {
+    const {
+      playFnTimeout = 20000,
+      playFnRetryInterval = 250
+    } = {};
+
+    const {debug, preview} = this.client.argv;
+    let renderError;
+
+    const renderErrorResult = await this.api
+      .navigateTo(this._getStoryUrl(storyId, viewMode))
+      .execute(function(innerHTML) {
+        var scriptTag = Object.assign(document.createElement('script'), {
+          type: 'module',
+          innerHTML
+        });
+        document.body.appendChild(scriptTag);
+      }, [
+        `
+        const channel = window.__STORYBOOK_ADDONS_CHANNEL__;
+        window['@@story_rendered'] = null;
+        
+        if (channel && channel.data) {
+          const errorEvents = channel.data.storyThrewException;
+          const storyEvents = channel.data.storyRendered;
+          
+          if (errorEvents && errorEvents.length > 0) {
+            window['@@story_rendered'] = {type: 'error', error: {
+              message: errorEvents[0].message,
+              stack: errorEvents[0].stack
+            }};
+          }
+          if (storyEvents && storyEvents.length > 0) {
+            window['@@story_rendered'] = {type: 'success', story: storyEvents[0]}; 
+          } 
+        }
+        
+        channel.on('storyThrewException', function(error) {
+          window['@@story_rendered'] = {type: 'error', error: {
+            message: error.message,
+            stack: error.stack
+          }};
+        });
+  
+        channel.on('storyRendered', function(event) {
+          window['@@story_rendered'] = {type: 'success', story: event};
+        });
+        `
+      ])
+      .waitUntil(async () => {
+        const result = await this.api.execute(function() {
+          if (window['@@story_rendered']) {
+            return window['@@story_rendered'];
+          }
+
+          return false;
+        });
+
+        let finished = false;
+        if (result && result.type) {
+          finished = true;
+        }
+
+        if (result && result.type === 'error') {
+          renderError = new Error('Error while rendering the story: ' + result.error.message);
+          renderError.showTrace = false;
+        }
+
+        return finished;
+      }, playFnTimeout, playFnRetryInterval, `time out reached (${playFnTimeout}ms) while waiting for afterMount() hook to complete.`)
+      .perform(function () {
+        if (renderError && !(debug || preview)) {
+          return true;
+        }
+      });
+
+    if (renderErrorResult && !(debug || preview)) {
+      const err = this.getError('Could not mount the component.');
+      err.detailedErr = renderError.message;
+      err.message = 'Component mounted with errors';
+
+      return err;
+    }
+
+    if (debug) {
       await this.api.debug();
-    } else if (this.client.argv.preview) {
+    } else if (preview) {
       await this.api.pause();
     }
+
 
     const component = await this.api.executeAsyncScript(this._getClientScript(), [{
       baseUrl: this.storybookUrl,
@@ -45,7 +139,7 @@ module.exports = class RenderStoryCommand {
       const result = response.value || {};
 
       if (result.value === null) {
-        const err = new NightwatchAssertError('Could not mount the component story.');
+        const err = new NightwatchMountError('Could not mount the component story.');
 
         err.showTrace = false;
         err.help = [

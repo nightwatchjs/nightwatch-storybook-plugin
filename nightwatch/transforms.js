@@ -81,13 +81,15 @@ module.exports = function(nightwatch_settings = {}) {
         },
 
         requireTest(modulePath, options, {argv, nightwatch_settings}) {
+          const metadata = stories.find(item => item.storyPath === modulePath);
+
           const jsdomObject = new jsdom.JSDOM('');
           global.window = jsdomObject.window;
           global.document = jsdomObject.window.document;
           global.navigator = jsdomObject.window.navigator;
           global.HTMLElement = jsdomObject.window.HTMLElement;
 
-          return run(modulePath, options, {argv, nightwatch_settings});
+          return run(modulePath, options, {argv, nightwatch_settings, id: metadata.id});
         }
       };
     });

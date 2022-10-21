@@ -5,22 +5,21 @@ export default {
   title: 'Form',
   component: Form,
 
-  test: {
-    async before(browser) {
-      // console.log('before hook', browser.capabilities)
-    },
 
-    async beforeEach(browser) {
-      // console.log('beforeEach hook')
-    },
+  async setup(browser) {
+    browser.globals.calls = 0;
+  },
 
-    async after(browser) {
-      // console.log('after hook')
-    },
+  async preRender(browser, context) {
+    browser.globals.calls++;
+  },
 
-    async afterEach(browser) {
-      // console.log('afterEach hook')
-    }
+  async postRender(browser, context) {
+    browser.globals.calls++;
+  },
+
+  async teardown(browser) {
+    await expect(browser.globals.calls).to.equal(4);
   }
 }
 
