@@ -1,4 +1,4 @@
-# Nightwatch Storybook Plugin
+# @nightwatch/storybook
 
 <p align=center>
   <img alt="Nightwatch.js Logo" src=".github/assets/nightwatch-logo.png" width=250 /><span>&nbsp;&nbsp;️&nbsp;&nbsp;</span> <img alt="React Logo" src=".github/assets/icon-storybook-default.png" width=200 />
@@ -101,11 +101,18 @@ Nightwatch is able to detect and run any existing interaction tests (using the `
 
 In addition, it provides the ability to extend the component story with its own testing capabilities, as follows:
 - define a story-bound `test()` function;
-- write test hooks (`before[Each]`/`after[Each]`) in the `default` story export.
+- support the test hooks API, defined in the `default` story export:
+  - `setup (browser)`
+  - `teardown (browser)`
+  - `preRender (browser, {id, title, name})`
+  - `postRender (browser, {id, title, name})`
+
+All test hooks are `async`. 
 
 Read more on:
 - Storybook [interaction tests](https://storybook.js.org/docs/react/writing-tests/interaction-testing)
     - How to use the [play() function](https://storybook.js.org/docs/react/writing-stories/play-function)
+    - [Test hooks API](https://storybook.js.org/docs/react/writing-tests/test-runner#test-hook-api-experimental)
 - Storybook [accessibility testing](https://storybook.js.org/docs/react/writing-tests/accessibility-testing)
 - [Component story format](https://storybook.js.org/docs/react/api/csf) (CSF)
     - [Component Story Format 3.0](https://storybook.js.org/blog/component-story-format-3-0/)
@@ -122,21 +129,21 @@ export default {
   title: 'Form',
   component: Form,
 
-  async before(browser) {
-    console.log('before hook', browser.capabilities)
+  async setup(browser) {
+    console.log('setup hook', browser.capabilities)
   },
 
-  async beforeEach(browser) {
-    console.log('beforeEach hook')
+  async preRender(browser) {
+    console.log('preRender hook')
   },
 
-  async after(browser) {
-    console.log('after hook')
+  async postRender(browser) {
+    console.log('postRender hook')
   },
-
-  async afterEach(browser) {
-    console.log('afterEach hook')
-  }
+  
+  async teardown(browser) {
+    console.log('teardown hook')
+  },
 }
 
 const Template = (args) => <Form {...args} />;
