@@ -72,6 +72,7 @@ The following options need to be set under the specific `'@nightwatch/storybook'
 - **`storybook_url`** – can be changed if Storybook is running on a different port/hostname (default `http://localhost:6006/`)
 - **`storybook_config_dir`** - default is `.storybook`
 - **`hide_csf_errors`** - Nightwatch tries to ignore the CSF parsing errors and displays a warning; setting this to `true` will hide these warnings (default is `false`)
+- **`show_browser_console`** - By default when using Chrome or Edge browsers, the browser console logs will be displayed in the Nightwatch console (using the `[browser]` prefix); this options disables this functionality.
 
 **Examples:**
 
@@ -83,7 +84,8 @@ module.exports = {
     start_storybook: false,
     storybook_url: 'http://localhost:6006/',
     storybook_config_dir: '.storybook', // default storybook config directory
-    hide_csf_errors: false
+    hide_csf_errors: false,
+    show_browser_console: true
   }
 }
 ```

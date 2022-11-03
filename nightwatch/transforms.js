@@ -12,6 +12,7 @@ module.exports = function(nightwatch_settings = {}) {
   // for each location, load the stories and parse the result
   const pluginSettings = Object.assign(defaultSettings, nightwatch_settings['@nightwatch/storybook'] || {});
   const storyLocations = metadata(pluginSettings).stories;
+  const showBrowserConsole = pluginSettings.show_browser_console;
 
   const promises = storyLocations.map((storiesPath) => {
     const resolvedPath = path.resolve(storiesPath);
@@ -25,8 +26,7 @@ module.exports = function(nightwatch_settings = {}) {
 
       return {
         storiesPath,
-
-        showBrowserConsole: true,
+        showBrowserConsole,
         name(exportName) {
           const data = stories.find(story => {
             const normalizedName = normalizeExportName(story.exportName);
