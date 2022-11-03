@@ -1,7 +1,7 @@
 # @nightwatch/storybook
 
 <p align=center>
-  <img alt="Nightwatch.js Logo" src=".github/assets/nightwatch-logo.png" width=250 /><span>&nbsp;&nbsp;️&nbsp;&nbsp;</span> <img alt="React Logo" src=".github/assets/icon-storybook-default.png" width=200 />
+  <img alt="Nightwatch.js Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/nightwatch-logo.png" width=250 /><span>&nbsp;&nbsp;️&nbsp;&nbsp;</span> <img alt="React Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/icon-storybook-default.png" width=200 />
 </p>
 
 The official **@nightwatch/storybook** plugin provides seamless integration between Nightwatch and Storybook for React. Nightwatch supercharges your Storybook by providing several important capabilities for component testing.
