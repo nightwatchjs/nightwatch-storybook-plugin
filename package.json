@@ -1,6 +1,6 @@
 {
   "name": "@nightwatch/storybook",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "publishConfig": {
     "access": "public"
   },
@@ -13,7 +13,6 @@
     "type": "git",
     "url": "git@github.com:nightwatchjs/nightwatch-storybook-plugin.git"
   },
-
   "description": "Automatically integrate Storybook and run stories directly with Nightwatch",
   "keywords": [
     "storybook",
