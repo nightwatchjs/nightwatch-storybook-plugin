@@ -4,6 +4,11 @@
   <img alt="Nightwatch.js Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/nightwatch-logo.png" width=250 /><span>&nbsp;&nbsp;️&nbsp;&nbsp;</span> <img alt="React Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/icon-storybook-default.png" width=200 />
 </p>
 
+[![npm](https://img.shields.io/npm/v/@nightwatch/storybook.svg)](https://www.npmjs.com/package/@nightwatch/storybook)
+[![Node.js CI](https://github.com/nightwatchjs/nightwatch-storybook-plugin/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-storybook-plugin/actions/workflows/tests.yaml)
+[![Discord][discord-badge]][discord]
+[![Node Support](https://img.shields.io/badge/node-%3E12.x-brightgreen.svg)](https://github.com/nightwatchjs/nightwatch/blob/27a855a2ec0c2008073708d5a2286c2819584fdc/.github/workflows/build-node.yaml#L19)
+
 The official **@nightwatch/storybook** plugin provides seamless integration between Nightwatch and Storybook for React. Nightwatch supercharges your Storybook by providing several important capabilities for component testing.
 
 ---
@@ -608,3 +613,6 @@ Accessibility violations for: example-button--primary.Primary
 
 ## License
 MIT
+
+[discord-badge]: https://img.shields.io/discord/618399631038218240.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[discord]: https://discord.gg/SN8Da2X
