@@ -548,7 +548,7 @@ Accessibility violations for: example-button--primary.Primary
 ```
 
 
-To view the entire report (which includes all the eveluated rules), pass `verbose: true` in the story parameters:
+To view the entire report (which includes all the evaluated rules), pass `verbose: true` in the story parameters:
 
 ```jsx
 // Button.stories.jsx
