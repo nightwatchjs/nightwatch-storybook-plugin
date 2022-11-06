@@ -392,7 +392,7 @@ npx nightwatch src/stories/Form.stories.jsx --env chrome --devtools --debug --st
 
 <img src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/debugger.png" alt="Screenshot of the Chrome Devtools debugger paused at a breakpoint" style="max-width:800px">
 
-You can also use the integrated Nightwatch debug console to issue commands from Nightwatch.
+You can also use the [integrated debug console](https://nightwatchjs.org/guide/debugging-tests/using-debug.html) to issue commands from Nightwatch.
 
 ---
   
