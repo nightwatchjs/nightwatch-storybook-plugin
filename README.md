@@ -194,12 +194,12 @@ npx nightwatch src/stories/Form.stories.jsx --env chrome --story=FilledForm
 ```
 
 ### Run stories in parallel
-It may be useful to run the stories in parallel for optimizing the speed of execution using the existing Nightwatch option of running in parallel using test workers.
+It may be useful to run the stories in parallel for optimizing the speed of execution using the existing Nightwatch option of running in parallel using test workers. In fact, running in parallel using test workers is enabled by default in Nightwatch v2.4.
 
 To run, for example, using 4 test worker processes (in headless mode):
 
 ```sh
-npx nightwatch ./src/stories/**.stories.jsx --env chrome --parallel=4 --headless
+npx nightwatch ./src/stories/**.stories.jsx --env chrome --workers=4 --headless
 ```
 
 The output should look as follows:
@@ -390,9 +390,7 @@ Run the example and observe the breakpoint in the Chrome devtools console.
 npx nightwatch src/stories/Form.stories.jsx --env chrome --devtools --debug --story=FilledForm 
 ```
 
-<details>
-<img src=".github/assets/debugger.png" alt="Screenshot of the Chrome Devtools debugger paused at a breakpoint" width="800px">
-</details>
+<img src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-storybook-plugin/main/.github/assets/debugger.png" alt="Screenshot of the Chrome Devtools debugger paused at a breakpoint" style="max-width:800px">
 
 You can also use the integrated Nightwatch debug console to issue commands from Nightwatch.
 
@@ -520,7 +518,6 @@ npx nightwatch src/stories/Button.stories.jsx -e chrome
 
 The output from Nightwatch should be:
 
-<details>
 
 ```
   ️TEST FAILURE (2.947s):  
@@ -549,7 +546,7 @@ Accessibility violations for: example-button--primary.Primary
 │                                                                                                                                                                     │
 ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 ```
-</details>
+
 
 To view the entire report (which includes all the eveluated rules), pass `verbose: true` in the story parameters:
 
