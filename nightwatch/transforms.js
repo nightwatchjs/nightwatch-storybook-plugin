@@ -72,16 +72,11 @@ module.exports = function(nightwatch_settings = {}) {
         },
 
         transformCode(code) {
-          const describeRegex = /(describe\(.+\{)+/gm;
-          const parts = code.split(describeRegex);
-          parts.shift();
-          const testCode = parts.join('\n');
-
           return code;
         },
 
         requireTest(modulePath, options, {argv, nightwatch_settings}) {
-          const metadata = stories.find(item => item.storyPath === modulePath);
+          const metadata = stories.find(item => item.storyPath === modulePath) || {};
 
           const jsdomObject = new jsdom.JSDOM('');
           global.window = jsdomObject.window;
