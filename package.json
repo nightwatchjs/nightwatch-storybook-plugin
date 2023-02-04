@@ -42,7 +42,7 @@
     "@storybook/manager-webpack4": "^6.5.10",
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
-    "chromedriver": "^107.0.3",
+    "chromedriver": "^109.0.0",
     "eslint": "^8.17.0",
     "nightwatch": "^2.5.1",
     "prop-types": "^15.8.1",
