@@ -2,7 +2,7 @@ module.exports = class A11yCommand {
 
   command(storyId, data = {}) {
     const {a11yConfig} = data;
-
+    
     if (a11yConfig) {
       this.api
         .axeInject()
