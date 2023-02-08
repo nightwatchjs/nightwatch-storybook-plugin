@@ -65,10 +65,9 @@ module.exports = function(nightwatch_settings = {}) {
           const {id, viewMode} = data;
 
           return async function(browser) {
-            const element = await browser.renderStory(id, viewMode, data).perform(() => {
-              browser.runA11yTests(id, data);
-            });
+            await browser.renderStory(id, viewMode, data).perform(() => browser.runA11yTests(id, data));
 
+            const element = await browser.renderStory(id, viewMode, data);
 
             return {component: element};
           };
