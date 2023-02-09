@@ -1,10 +1,10 @@
 module.exports = class A11yCommand {
 
-  command(storyId, data = {}) {
+  async command(storyId, data = {}) {
     const {a11yConfig} = data;
     
     if (a11yConfig) {
-      this.api
+      await this.api
         .axeInject()
         .axeRun('body', {
           runAssertions: a11yConfig.runAssertions || false,

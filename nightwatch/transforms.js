@@ -66,8 +66,8 @@ module.exports = function(nightwatch_settings = {}) {
 
           return async function(browser) {
             const element = await browser.renderStory(id, viewMode, data);
-            await browser.runA11yTests(id, data);
-                        
+            await browser.perform(() => browser.runA11yTests(id, data));
+
             return {component: element};
           };
         },
