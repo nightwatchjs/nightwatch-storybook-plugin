@@ -10,6 +10,8 @@ const STORYBOOK_PORT_RE = /(?:localhost|127.0.0.1):(\d+)\/?$/;
 
 let storybookPid = null;
 
+const isWinPlatform = /^win/.test(process.platform);
+
 const getStorybookUrl = function() {
   const pluginSettings = Object.assign(defaultSettings, this.settings['@nightwatch/storybook'] || {});
 
@@ -55,9 +57,11 @@ module.exports = {
       // eslint-disable-next-line no-console
       console.info(chalk.dim(` Starting storybook at: ${storybookUrl}...`));
 
-      storybookPid = spawn(path.resolve('node_modules/.bin/start-storybook'), ['--no-open', '-p', String(storybookPort)], {
-        cwd: process.cwd()
-      }).pid;
+      storybookPid = spawn(path.resolve(`node_modules/.bin/start-storybook${isWinPlatform ? '.cmd' : ''}`),
+        ['--no-open', '-p', String(storybookPort)], {
+          cwd: process.cwd(),
+          stdio: 'inherit'
+        }).pid;
 
       await waitOn({
         resources: [storybookUrl]
@@ -89,7 +93,11 @@ module.exports = {
 
   async after() {
     if (storybookPid) {
-      process.kill(storybookPid);
+      if (isWinPlatform) {
+        spawn('taskkill', ['/pid', storybookPid, '/f', '/t']);
+      } else {
+        process.kill(storybookPid);
+      }
     }
   }
 };
