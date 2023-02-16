@@ -18,6 +18,24 @@ const getStorybookUrl = function() {
   return pluginSettings.storybook_url;
 };
 
+const createProcess = function (storybookPort) {
+  return spawn(path.resolve(`node_modules/.bin/start-storybook${isWinPlatform ? '.cmd' : ''}`),
+    ['--no-open', '-p', String(storybookPort)], {
+      cwd: process.cwd(),
+      stdio: 'inherit'
+    }).pid;
+};
+
+const endProcess = function () {
+  if (isWinPlatform) {
+    spawn('taskkill', ['/pid', storybookPid, '/f', '/t']);
+
+    return;
+  }
+
+  process.kill(storybookPid);
+};
+
 module.exports = {
   beforeEach() {
     // child processes don't have access to the context from the before() hook
@@ -57,11 +75,7 @@ module.exports = {
       // eslint-disable-next-line no-console
       console.info(chalk.dim(` Starting storybook at: ${storybookUrl}...`));
 
-      storybookPid = spawn(path.resolve(`node_modules/.bin/start-storybook${isWinPlatform ? '.cmd' : ''}`),
-        ['--no-open', '-p', String(storybookPort)], {
-          cwd: process.cwd(),
-          stdio: 'inherit'
-        }).pid;
+      storybookPid = createProcess(storybookPort);
 
       await waitOn({
         resources: [storybookUrl]
@@ -93,11 +107,7 @@ module.exports = {
 
   async after() {
     if (storybookPid) {
-      if (isWinPlatform) {
-        spawn('taskkill', ['/pid', storybookPid, '/f', '/t']);
-      } else {
-        process.kill(storybookPid);
-      }
+      endProcess();
     }
   }
 };
