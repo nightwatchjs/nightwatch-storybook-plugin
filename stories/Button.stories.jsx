@@ -69,3 +69,21 @@ Small.args = {
   size: 'small',
   label: 'Button',
 };
+
+// https://storybook.js.org/docs/react/writing-tests/accessibility-testing#story-level-a11y-configuration
+export const EmptyButton = Button.bind({});
+EmptyButton.args = {
+  size: 'small',
+};
+EmptyButton.parameters = {
+  a11y: {
+    config: {
+      rules: [
+        {
+          id: 'button-name',
+          enabled: false,
+        },
+      ]
+    }
+  },
+};
